@@ -42,11 +42,36 @@ const updateProduct = (req,res) => {
     })
 }
 
+const deleteProduct = (req,res) =>{
+    const {id} = req.params
+    Product.findByIdAndDelete(id,req.body,(error, product) => {
+        if (error) {
+            return res.status(400).send({message: "No se pudo eliminar el producto"})
+        }
+        if (!product) {
+            return res.status(404).send({message: "No se encontro el producto"})
+        }
+        return res.status(200).send({message: "Producto eliminado"})
+    })
+}
 
-
+const getProduct = (req,res) =>{
+    const {id} = req.params
+    Product.findById(id,req.body,(error, product) => {
+        if (error) {
+            return res.status(400).send({message: "No se pudo buscar el producto"})
+        }
+        if (!product) {
+            return res.status(404).send({message: "No se encontro el producto"})
+        }
+        return res.status(200).send(product)
+    })
+}
 
 module.exports = {
     createProduct,
     getProducts,
-    updateProduct
+    updateProduct,
+    deleteProduct,
+    getProduct
 }
